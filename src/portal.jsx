@@ -33,14 +33,11 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
     if (!this.host) throw new Error(`Couldn't find host ${this.p.host} for ${this.props.name || this.tt.id} in ${Object.keys(hosts).join(", ")}`)
     if (!this.provider) throw new Error("No provider was set")
 
-    useMemo(() => {
-      this.host?.registerPortal(this)
-      this.provider.registerPortal(this)
-    }, [])
-
-    this.host?.setContent(this)
-
     useEffect(() => {
+      this.provider.registerPortal(this)
+      this.host?.registerPortal(this)
+      this.host?.setContent(this)
+
       return () => {
         this.host?.unregisterPortal(this)
         this.provider.unregisterPortal(this)

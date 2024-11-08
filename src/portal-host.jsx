@@ -16,7 +16,7 @@ export default memo(shapeComponent(class ConjointmentPortalsHost extends ShapeCo
 
   static propTypes = propTypesExact({
     children: PropTypes.node,
-    name: PropTypes.string
+    name: PropTypes.string.isRequired
   })
 
   setup() {
