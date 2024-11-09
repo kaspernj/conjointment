@@ -9,14 +9,16 @@ const HostsContext = createContext()
 
 export {HostsContext}
 
-export default memo(shapeComponent(class ConjointmentPortalsHost extends ShapeComponent {
+export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeComponent {
   static defaultProps = {
-    name: "base"
+    name: "base",
+    placement: "above"
   }
 
   static propTypes = propTypesExact({
     children: PropTypes.node,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    placement: PropTypes.string.isRequired
   })
 
   setup() {
@@ -70,13 +72,16 @@ export default memo(shapeComponent(class ConjointmentPortalsHost extends ShapeCo
   render() {
     return (
       <HostsContext.Provider value={{host: this, hosts: this.tt.newHosts}}>
-        {Object.keys(this.s.portals).map((id) =>
-          <Fragment key={id}>
-            {this.s.portals[id]}
-          </Fragment>
-        )}
+        {this.p.placement == "above" && this.portalContent()}
         {this.props.children}
+        {this.p.placement == "below" && this.portalContent()}
       </HostsContext.Provider>
     )
   }
+
+  portalContent = () => Object.keys(this.s.portals).map((id) =>
+    <Fragment key={`portal-${id}`}>
+      {this.s.portals[id]}
+    </Fragment>
+  )
 }))

@@ -22,6 +22,7 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
   })
 
   id = shared.idCount++
+  mounted = false
 
   setup() {
     const {host, hosts} = useContext(HostsContext)
@@ -32,11 +33,13 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
 
     if (!this.host) throw new Error(`Couldn't find host ${this.p.host} for ${this.props.name || this.tt.id} in ${Object.keys(hosts).join(", ")}`)
     if (!this.provider) throw new Error("No provider was set")
+    if (this.mounted) this.host?.setContent(this)
 
     useEffect(() => {
       this.provider.registerPortal(this)
       this.host?.registerPortal(this)
       this.host?.setContent(this)
+      this.mounted = true
 
       return () => {
         this.host?.unregisterPortal(this)

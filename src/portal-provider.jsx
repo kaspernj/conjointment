@@ -7,7 +7,7 @@ const PortalsContext = createContext()
 
 export {PortalsContext}
 
-export default memo(shapeComponent(class ConjointmentPortalsProvider extends ShapeComponent {
+export default memo(shapeComponent(class ConjointmentPortalProvider extends ShapeComponent {
   hosts = {}
   newHosts = {}
   portals = {}
