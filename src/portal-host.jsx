@@ -1,4 +1,4 @@
-import {createContext, Fragment, useContext, useEffect} from "react"
+import React, {createContext, Fragment, useContext, useEffect} from "react"
 import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
 import memo from "set-state-compare/src/memo"
 import {PortalsContext} from "./portal-provider"

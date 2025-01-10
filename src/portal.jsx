@@ -1,7 +1,7 @@
 import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
 import {HostsContext} from "./portal-host"
 import memo from "set-state-compare/src/memo"
-import {useContext, useEffect, useMemo} from "react"
+import {useContext, useEffect} from "react"
 import {PortalsContext} from "./portal-provider"
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
@@ -25,7 +25,11 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
   mounted = false
 
   setup() {
-    const {host, hosts} = useContext(HostsContext)
+    const hostsContext = useContext(HostsContext)
+
+    if (!hostsContext) throw new Error("No hosts context - have you set up a PortalHost?")
+
+    const {host, hosts} = hostsContext
 
     this.lastHost = host
     this.provider = useContext(PortalsContext)
