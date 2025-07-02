@@ -25,7 +25,11 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
   mounted = false
 
   setup() {
-    const {host, hosts} = useContext(HostsContext)
+    const hostsContext = useContext(HostsContext)
+
+    if (!hostsContext) throw new Error("No hosts context - have you set up a PortalHost?")
+
+    const {host, hosts} = hostsContext
 
     this.lastHost = host
     this.provider = useContext(PortalsContext)
