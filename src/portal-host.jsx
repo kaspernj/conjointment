@@ -1,4 +1,4 @@
-import React, {createContext, Fragment, useContext, useEffect} from "react"
+import React, {createContext, Fragment, useContext, useEffect, useMemo} from "react"
 import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
 import memo from "set-state-compare/src/memo"
 import {PortalsContext} from "./portal-provider"
@@ -25,8 +25,13 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
     const {hosts} = useContext(HostsContext)
 
     this.provider = useContext(PortalsContext)
-    this.newHosts = Object.assign({}, hosts)
-    this.newHosts[this.p.name] = this
+    this.newHosts = useMemo(() => {
+      const newHosts = Object.assign({}, hosts)
+
+      newHosts[this.p.name] = this
+
+      return newHosts
+    }, [this.p.name, hosts])
 
     if (!this.provider) throw new Error("No provider was set")
 
@@ -70,8 +75,10 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
   }
 
   render() {
+    const providerValue = useMemo(() => ({host: this, hosts: this.tt.newHosts}), [this.tt.newHosts])
+
     return (
-      <HostsContext.Provider value={{host: this, hosts: this.tt.newHosts}}>
+      <HostsContext.Provider value={providerValue}>
         {this.p.placement == "above" && this.portalContent()}
         {this.props.children}
         {this.p.placement == "below" && this.portalContent()}

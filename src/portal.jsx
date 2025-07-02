@@ -1,7 +1,7 @@
+import {useContext, useEffect} from "react"
 import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
 import {HostsContext} from "./portal-host"
 import memo from "set-state-compare/src/memo"
-import {useContext, useEffect} from "react"
 import {PortalsContext} from "./portal-provider"
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
