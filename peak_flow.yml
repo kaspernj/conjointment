@@ -1,4 +1,4 @@
 before_script:
-  - yarn
+  - npm install
 script:
-  - yarn test
+  - npm run lint

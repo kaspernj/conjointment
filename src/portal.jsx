@@ -1,10 +1,11 @@
-import {useContext, useEffect} from "react"
-import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
-import {HostsContext} from "./portal-host"
-import memo from "set-state-compare/src/memo"
-import {PortalsContext} from "./portal-provider"
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
+import {useContext, useEffect} from "react"
+import memo from "set-state-compare/src/memo"
+import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
+
+import {HostsContext} from "./portal-host"
+import {PortalsContext} from "./portal-provider"
 
 const shared = {
   idCount: 0

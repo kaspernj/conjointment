@@ -1,7 +1,8 @@
 import React, {createContext} from "react"
-import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
-import {HostsContext} from "./portal-host"
 import memo from "set-state-compare/src/memo"
+import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
+
+import {HostsContext} from "./portal-host"
 
 const PortalsContext = createContext()
 
