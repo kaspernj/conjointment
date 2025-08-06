@@ -7,6 +7,9 @@ import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-compon
 import {PortalsContext} from "./portal-provider"
 
 const HostsContext = createContext()
+const shared = {
+  idCount: 0
+}
 
 export {HostsContext}
 
@@ -22,9 +25,14 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
     placement: PropTypes.string.isRequired
   })
 
-  setup() {
-    const {hosts} = useContext(HostsContext)
+  id = shared.idCount++
 
+  getName = () => this.p.name
+
+  setup() {
+    const {host: parentHost, hosts} = useContext(HostsContext)
+
+    this.parentHost = parentHost
     this.provider = useContext(PortalsContext)
     this.newHosts = useMemo(() => {
       const newHosts = Object.assign({}, hosts)
@@ -49,10 +57,20 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
     }, [])
   }
 
+  getHostByName(hostName) {
+    if (this.p.name == hostName) return this
+
+    return this.parentHost?.getHostByName(hostName)
+  }
+
   registerPortal(portal) {
+    const {id} = portal.tt
+
+    if (id in this.s.portals) throw new Error(`Portal already registered: ${portal.getName()}`)
+
     const newPortals = Object.assign({}, this.s.portals)
 
-    newPortals[portal.tt.id] = portal.props.children
+    newPortals[id] = portal.props.children
 
     this.setState({portals: newPortals})
   }
