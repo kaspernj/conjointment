@@ -1,7 +1,8 @@
 import React, {createContext} from "react"
-import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
-import {HostsContext} from "./portal-host"
 import memo from "set-state-compare/src/memo"
+import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
+
+import {HostsContext} from "./portal-host"
 
 const PortalsContext = createContext()
 
@@ -14,25 +15,28 @@ export default memo(shapeComponent(class ConjointmentPortalProvider extends Shap
   providerValue = {provider: this}
 
   registerHost(host) {
-    const name = host.p.name
+    const {hosts} = this.tt
+    const {id} = host.tt
 
-    this.tt.hosts[name] = host
+    if (id in hosts) throw new Error(`Host ${id} already registered`)
+
+    hosts[id] = host
 
     for (const key in this.tt.portals) {
       const portal = this.tt.portals[key]
 
-      if (portal.p.host == name) {
+      if (portal.p.host == id) {
         host.registerPortal(portal)
       }
     }
   }
 
-  registerPortal(portal) {
-    this.portals[portal.tt.id] = portal
+  unregisterHost(host) {
+    delete this.tt.hosts[host.tt.id]
   }
 
-  unregisterHost(host) {
-    delete this.tt.hosts[host.p.name]
+  registerPortal(portal) {
+    this.portals[portal.tt.id] = portal
   }
 
   unregisterPortal(portal) {
