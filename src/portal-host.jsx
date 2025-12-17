@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
 import React, {createContext, Fragment, useContext, useEffect, useMemo} from "react"
-import memo from "set-state-compare/src/memo"
-import {shapeComponent, ShapeComponent} from "set-state-compare/src/shape-component"
+import memo from "set-state-compare/build/memo"
+import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-component"
 
 import {PortalsContext} from "./portal-provider"
 

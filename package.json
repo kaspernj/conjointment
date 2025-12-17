@@ -30,7 +30,7 @@
   "dependencies": {
     "prop-types": "^15.8.1",
     "prop-types-exact": "^1.2.5",
-    "set-state-compare": "^1.0.52"
+    "set-state-compare": "^1.0.61"
   },
   "devDependencies": {
     "@types/react": "^18.0.25",
