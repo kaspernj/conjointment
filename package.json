@@ -33,7 +33,7 @@
     "prop-types-exact": "^1.2.5"
   },
   "devDependencies": {
-    "@types/react": "^18.0.25",
+    "@types/react": "^19.2.13",
     "expo-module-scripts": "^3.5.2",
     "expo-modules-core": "^1.12.24"
   },
