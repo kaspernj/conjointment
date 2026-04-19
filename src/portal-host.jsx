@@ -27,6 +27,14 @@ export {HostsContext}
  * @property {Record<number, import("react").ReactNode>} portals
  */
 
+/**
+ * @typedef {object} PortalLike
+ * @property {any} tt
+ * @property {{children?: import("react").ReactNode}} props
+ * @property {{name?: string}} p
+ * @property {() => string} getName
+ */
+
 /** @extends {ShapeComponent<PortalHostProps, PortalHostState>} */
 class ConjointmentPortalHost extends ShapeComponent {
   static defaultProps = {
@@ -41,7 +49,9 @@ class ConjointmentPortalHost extends ShapeComponent {
   })
 
   id = shared.idCount++
+  /** @type {PortalHostState} */
   state = {
+    /** @type {Record<number, import("react").ReactNode>} */
     portals: {}
   }
 
@@ -71,12 +81,17 @@ class ConjointmentPortalHost extends ShapeComponent {
     }, [])
   }
 
+  /**
+   * @param {string} hostName
+   * @returns {ConjointmentPortalHost | undefined}
+   */
   getHostByName(hostName) {
     if (this.p.name == hostName) return this
 
     return this.parentHost?.getHostByName(hostName)
   }
 
+  /** @param {PortalLike} portal */
   registerPortal(portal) {
     const {id} = portal.tt
 
@@ -89,6 +104,7 @@ class ConjointmentPortalHost extends ShapeComponent {
     this.s.portals = newPortals
   }
 
+  /** @param {PortalLike} portal */
   setContent(portal) {
     const newPortals = Object.assign({}, this.s.portals)
 
@@ -99,6 +115,7 @@ class ConjointmentPortalHost extends ShapeComponent {
     this.s.portals = newPortals
   }
 
+  /** @param {PortalLike} portal */
   unregisterPortal(portal) {
     const newPortals = Object.assign({}, this.s.portals)
 
