@@ -3,6 +3,7 @@
   "version": "0.1.10",
   "description": "Just another portal library.",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
