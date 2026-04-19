@@ -11,7 +11,15 @@ const shared = {
   idCount: 0
 }
 
-export default memo(shapeComponent(class ConjointmentPortal extends ShapeComponent {
+/**
+ * @typedef {object} PortalProps
+ * @property {import("react").ReactNode} [children]
+ * @property {string} host
+ * @property {string} [name]
+ */
+
+/** @extends {ShapeComponent<PortalProps>} */
+class ConjointmentPortal extends ShapeComponent {
   static defaultProps = {
     host: "base"
   }
@@ -70,4 +78,6 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
   }
 
   render = () => null
-}))
+}
+
+export default memo(shapeComponent(ConjointmentPortal))

@@ -8,7 +8,13 @@ const PortalsContext = createContext()
 
 export {PortalsContext}
 
-export default memo(shapeComponent(class ConjointmentPortalProvider extends ShapeComponent {
+/**
+ * @typedef {object} PortalProviderProps
+ * @property {import("react").ReactNode} [children]
+ */
+
+/** @extends {ShapeComponent<PortalProviderProps>} */
+class ConjointmentPortalProvider extends ShapeComponent {
   hosts = {}
   newHosts = {}
   portals = {}
@@ -46,10 +52,10 @@ export default memo(shapeComponent(class ConjointmentPortalProvider extends Shap
   render() {
     return (
       <PortalsContext.Provider value={this}>
-        <HostsContext.Provider value={this.tt.newHosts}>
-          {this.props.children}
-        </HostsContext.Provider>
+        <HostsContext.Provider value={this.tt.newHosts}>{this.props.children}</HostsContext.Provider>
       </PortalsContext.Provider>
     )
   }
-}))
+}
+
+export default memo(shapeComponent(ConjointmentPortalProvider))

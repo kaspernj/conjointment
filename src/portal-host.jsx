@@ -13,6 +13,19 @@ const shared = {
 
 export {HostsContext}
 
+/**
+ * @typedef {object} PortalHostProps
+ * @property {import("react").ReactNode} [children]
+ * @property {string} name
+ * @property {string} placement
+ */
+
+/**
+ * @typedef {object} PortalHostState
+ * @property {Record<number, import("react").ReactNode>} portals
+ */
+
+/** @extends {ShapeComponent<PortalHostProps, PortalHostState>} */
 class ConjointmentPortalHost extends ShapeComponent {
   static defaultProps = {
     name: "base",
@@ -104,11 +117,7 @@ class ConjointmentPortalHost extends ShapeComponent {
     )
   }
 
-  portalContent = () => Object.keys(this.s.portals).map((id) =>
-    <Fragment key={`portal-${id}`}>
-      {this.s.portals[id]}
-    </Fragment>
-  )
+  portalContent = () => Object.keys(this.s.portals).map((id) => <Fragment key={`portal-${id}`}>{this.s.portals[id]}</Fragment>)
 }
 
 const ConjointmentPortalHostShapeComponent = shapeComponent(ConjointmentPortalHost)
