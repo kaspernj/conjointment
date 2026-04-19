@@ -3,6 +3,9 @@
   "compilerOptions": {
     "allowJs": true,
     "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "rootDir": "./src",
     "outDir": "./build"
   },
   "include": ["./src"],
