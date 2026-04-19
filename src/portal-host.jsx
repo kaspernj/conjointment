@@ -26,7 +26,7 @@ export {HostsContext}
  */
 
 /**
- * @typedef {object} PortalLike
+ * @typedef {object} RegisteredPortal
  * @property {any} tt
  * @property {{children?: import("react").ReactNode}} props
  * @property {{name?: string}} p
@@ -82,35 +82,37 @@ class ConjointmentPortalHost extends ShapeComponent {
     return this.parentHost?.getHostByName(hostName)
   }
 
-  /** @param {PortalLike} portal */
-  registerPortal(portal) {
-    const {id} = portal.tt
+  /** @param {RegisteredPortal} registeredPortal */
+  registerPortal(registeredPortal) {
+    const portalId = registeredPortal.tt.id
 
-    if (id in this.s.portals) throw new Error(`Portal already registered: ${portal.getName()}`)
+    if (portalId in this.s.portals) throw new Error(`Portal already registered: ${registeredPortal.getName()}`)
 
     const newPortals = Object.assign({}, this.s.portals)
 
-    newPortals[id] = portal.props.children
+    newPortals[portalId] = registeredPortal.props.children
 
     this.s.portals = newPortals
   }
 
-  /** @param {PortalLike} portal */
-  setContent(portal) {
+  /** @param {RegisteredPortal} registeredPortal */
+  setContent(registeredPortal) {
     const newPortals = Object.assign({}, this.s.portals)
+    const portalId = registeredPortal.tt.id
+    const portalName = registeredPortal.p.name
 
-    if (!(portal.tt.id in newPortals)) throw new Error(`No such portal: ${portal.p.name} (${portal.tt.id})`)
+    if (!(portalId in newPortals)) throw new Error(`No such portal: ${portalName} (${portalId})`)
 
-    newPortals[portal.tt.id] = portal.props.children
+    newPortals[portalId] = registeredPortal.props.children
 
     this.s.portals = newPortals
   }
 
-  /** @param {PortalLike} portal */
-  unregisterPortal(portal) {
+  /** @param {RegisteredPortal} registeredPortal */
+  unregisterPortal(registeredPortal) {
     const newPortals = Object.assign({}, this.s.portals)
 
-    delete newPortals[portal.tt.id]
+    delete newPortals[registeredPortal.tt.id]
 
     this.s.portals = newPortals
   }
