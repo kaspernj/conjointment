@@ -1,3 +1,5 @@
+// @ts-check
+
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
 import React, {createContext, Fragment, useContext, useEffect, useMemo} from "react"
@@ -6,7 +8,7 @@ import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-comp
 
 import {PortalsContext} from "./portal-provider"
 
-const HostsContext = createContext()
+const HostsContext = createContext(/** @type {any | null} */ (null))
 const shared = {
   idCount: 0
 }

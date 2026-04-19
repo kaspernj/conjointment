@@ -1,10 +1,12 @@
+// @ts-check
+
 import React, {createContext} from "react"
 import memo from "set-state-compare/build/memo"
 import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-component"
 
 import {HostsContext} from "./portal-host"
 
-const PortalsContext = createContext()
+const PortalsContext = createContext(/** @type {any | null} */ (null))
 
 export {PortalsContext}
 

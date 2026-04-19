@@ -1,3 +1,5 @@
+// @ts-check
+
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
 import {useContext, useEffect} from "react"
