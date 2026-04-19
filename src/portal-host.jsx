@@ -13,7 +13,7 @@ const shared = {
 
 export {HostsContext}
 
-export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeComponent {
+class ConjointmentPortalHost extends ShapeComponent {
   static defaultProps = {
     name: "base",
     placement: "above"
@@ -26,6 +26,9 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
   })
 
   id = shared.idCount++
+  state = {
+    portals: {}
+  }
 
   getName = () => this.p.name
 
@@ -43,10 +46,6 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
     }, [this.p.name, hosts])
 
     if (!this.provider) throw new Error("No provider was set")
-
-    this.useStates({
-      portals: {}
-    })
 
     useEffect(() => {
       this.provider.registerHost(this)
@@ -72,7 +71,7 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
 
     newPortals[id] = portal.props.children
 
-    this.setState({portals: newPortals})
+    this.s.portals = newPortals
   }
 
   setContent(portal) {
@@ -82,7 +81,7 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
 
     newPortals[portal.tt.id] = portal.props.children
 
-    this.setState({portals: newPortals})
+    this.s.portals = newPortals
   }
 
   unregisterPortal(portal) {
@@ -90,7 +89,7 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
 
     delete newPortals[portal.tt.id]
 
-    this.setState({portals: newPortals})
+    this.s.portals = newPortals
   }
 
   render() {
@@ -110,4 +109,8 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
       {this.s.portals[id]}
     </Fragment>
   )
-}))
+}
+
+const ConjointmentPortalHostShapeComponent = shapeComponent(ConjointmentPortalHost)
+
+export default memo(ConjointmentPortalHostShapeComponent)
