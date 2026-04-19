@@ -24,7 +24,7 @@ export {HostsContext}
 
 /**
  * @typedef {object} PortalHostState
- * @property {Record<number, import("react").ReactNode>} portals
+ * @property {Record<string, import("react").ReactNode>} portals
  */
 
 /**
@@ -51,7 +51,7 @@ class ConjointmentPortalHost extends ShapeComponent {
   id = shared.idCount++
   /** @type {PortalHostState} */
   state = {
-    /** @type {Record<number, import("react").ReactNode>} */
+    /** @type {Record<string, import("react").ReactNode>} */
     portals: {}
   }
 
