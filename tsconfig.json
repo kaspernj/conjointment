@@ -3,6 +3,10 @@
   "compilerOptions": {
     "allowJs": true,
     "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["jest", "jest-require", "prop-types"],
+    "rootDir": "./src",
     "outDir": "./build"
   },
   "include": ["./src"],

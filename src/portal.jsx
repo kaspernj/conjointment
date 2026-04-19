@@ -1,3 +1,5 @@
+// @ts-check
+
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
 import {useContext, useEffect} from "react"
@@ -7,20 +9,20 @@ import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-comp
 import {HostsContext} from "./portal-host"
 import {PortalsContext} from "./portal-provider"
 
-const shared = {
-  idCount: 0
-}
+const shared = {idCount: 0}
 
-export default memo(shapeComponent(class ConjointmentPortal extends ShapeComponent {
-  static defaultProps = {
-    host: "base"
-  }
+/**
+ * @typedef {object} PortalProps
+ * @property {import("react").ReactNode} [children]
+ * @property {string} host
+ * @property {string} [name]
+ */
 
-  static propTypes = propTypesExact({
-    children: PropTypes.any,
-    host: PropTypes.string.isRequired,
-    name: PropTypes.string
-  })
+/** @extends {ShapeComponent<PortalProps>} */
+class ConjointmentPortal extends ShapeComponent {
+  static defaultProps = {host: "base"}
+
+  static propTypes = propTypesExact({children: PropTypes.any, host: PropTypes.string.isRequired, name: PropTypes.string})
 
   id = shared.idCount++
   mounted = false
@@ -70,4 +72,6 @@ export default memo(shapeComponent(class ConjointmentPortal extends ShapeCompone
   }
 
   render = () => null
-}))
+}
+
+export default memo(shapeComponent(ConjointmentPortal))

@@ -1,3 +1,5 @@
+// @ts-check
+
 import PropTypes from "prop-types"
 import propTypesExact from "prop-types-exact"
 import React, {createContext, Fragment, useContext, useEffect, useMemo} from "react"
@@ -6,26 +8,43 @@ import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-comp
 
 import {PortalsContext} from "./portal-provider"
 
-const HostsContext = createContext()
-const shared = {
-  idCount: 0
-}
+const HostsContext = createContext(/** @type {any | null} */ (null))
+const shared = {idCount: 0}
 
 export {HostsContext}
 
-export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeComponent {
-  static defaultProps = {
-    name: "base",
-    placement: "above"
-  }
+/**
+ * @typedef {object} PortalHostProps
+ * @property {import("react").ReactNode} [children]
+ * @property {string} name
+ * @property {string} placement
+ */
 
-  static propTypes = propTypesExact({
-    children: PropTypes.any,
-    name: PropTypes.string.isRequired,
-    placement: PropTypes.string.isRequired
-  })
+/**
+ * @typedef {object} PortalHostState
+ * @property {Record<string, import("react").ReactNode>} portals
+ */
+
+/**
+ * @typedef {object} RegisteredPortal
+ * @property {any} tt
+ * @property {{children?: import("react").ReactNode}} props
+ * @property {{name?: string}} p
+ * @property {() => string} getName
+ */
+
+/** @extends {ShapeComponent<PortalHostProps, PortalHostState>} */
+class ConjointmentPortalHost extends ShapeComponent {
+  static defaultProps = {name: "base", placement: "above"}
+
+  static propTypes = propTypesExact({children: PropTypes.any, name: PropTypes.string.isRequired, placement: PropTypes.string.isRequired})
 
   id = shared.idCount++
+  /** @type {PortalHostState} */
+  state = {
+    /** @type {Record<string, import("react").ReactNode>} */
+    portals: {}
+  }
 
   getName = () => this.p.name
 
@@ -44,10 +63,6 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
 
     if (!this.provider) throw new Error("No provider was set")
 
-    this.useStates({
-      portals: {}
-    })
-
     useEffect(() => {
       this.provider.registerHost(this)
 
@@ -57,40 +72,49 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
     }, [])
   }
 
+  /**
+   * @param {string} hostName
+   * @returns {ConjointmentPortalHost | undefined}
+   */
   getHostByName(hostName) {
     if (this.p.name == hostName) return this
 
     return this.parentHost?.getHostByName(hostName)
   }
 
-  registerPortal(portal) {
-    const {id} = portal.tt
+  /** @param {RegisteredPortal} registeredPortal */
+  registerPortal(registeredPortal) {
+    const portalId = registeredPortal.tt.id
 
-    if (id in this.s.portals) throw new Error(`Portal already registered: ${portal.getName()}`)
+    if (portalId in this.s.portals) throw new Error(`Portal already registered: ${registeredPortal.getName()}`)
 
     const newPortals = Object.assign({}, this.s.portals)
 
-    newPortals[id] = portal.props.children
+    newPortals[portalId] = registeredPortal.props.children
 
-    this.setState({portals: newPortals})
+    this.s.portals = newPortals
   }
 
-  setContent(portal) {
+  /** @param {RegisteredPortal} registeredPortal */
+  setContent(registeredPortal) {
     const newPortals = Object.assign({}, this.s.portals)
+    const portalId = registeredPortal.tt.id
+    const portalName = registeredPortal.p.name
 
-    if (!(portal.tt.id in newPortals)) throw new Error(`No such portal: ${portal.p.name} (${portal.tt.id})`)
+    if (!(portalId in newPortals)) throw new Error(`No such portal: ${portalName} (${portalId})`)
 
-    newPortals[portal.tt.id] = portal.props.children
+    newPortals[portalId] = registeredPortal.props.children
 
-    this.setState({portals: newPortals})
+    this.s.portals = newPortals
   }
 
-  unregisterPortal(portal) {
+  /** @param {RegisteredPortal} registeredPortal */
+  unregisterPortal(registeredPortal) {
     const newPortals = Object.assign({}, this.s.portals)
 
-    delete newPortals[portal.tt.id]
+    delete newPortals[registeredPortal.tt.id]
 
-    this.setState({portals: newPortals})
+    this.s.portals = newPortals
   }
 
   render() {
@@ -105,9 +129,9 @@ export default memo(shapeComponent(class ConjointmentPortalHost extends ShapeCom
     )
   }
 
-  portalContent = () => Object.keys(this.s.portals).map((id) =>
-    <Fragment key={`portal-${id}`}>
-      {this.s.portals[id]}
-    </Fragment>
-  )
-}))
+  portalContent = () => Object.keys(this.s.portals).map((id) => <Fragment key={`portal-${id}`}>{this.s.portals[id]}</Fragment>)
+}
+
+const ConjointmentPortalHostShapeComponent = shapeComponent(ConjointmentPortalHost)
+
+export default memo(ConjointmentPortalHostShapeComponent)

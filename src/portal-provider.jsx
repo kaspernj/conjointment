@@ -1,55 +1,82 @@
+// @ts-check
+
 import React, {createContext} from "react"
 import memo from "set-state-compare/build/memo"
 import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-component"
 
 import {HostsContext} from "./portal-host"
 
-const PortalsContext = createContext()
+const PortalsContext = createContext(/** @type {any | null} */ (null))
 
 export {PortalsContext}
 
-export default memo(shapeComponent(class ConjointmentPortalProvider extends ShapeComponent {
+/**
+ * @typedef {object} PortalProviderProps
+ * @property {import("react").ReactNode} [children]
+ */
+
+/**
+ * @typedef {object} RegisteredHost
+ * @property {{id: string}} tt
+ * @property {(registeredPortal: RegisteredPortal) => void} registerPortal
+ */
+
+/**
+ * @typedef {object} RegisteredPortal
+ * @property {{id: string}} tt
+ * @property {{host: string}} p
+ */
+
+/** @extends {ShapeComponent<PortalProviderProps>} */
+class ConjointmentPortalProvider extends ShapeComponent {
+  /** @type {Record<string, RegisteredHost>} */
   hosts = {}
+  /** @type {Record<string, RegisteredHost>} */
   newHosts = {}
+  /** @type {Record<string, RegisteredPortal>} */
   portals = {}
   providerValue = {provider: this}
 
-  registerHost(host) {
+  /** @param {RegisteredHost} registeredHost */
+  registerHost(registeredHost) {
     const {hosts} = this.tt
-    const {id} = host.tt
+    const hostId = registeredHost.tt.id
 
-    if (id in hosts) throw new Error(`Host ${id} already registered`)
+    if (hostId in hosts) throw new Error(`Host ${hostId} already registered`)
 
-    hosts[id] = host
+    hosts[hostId] = registeredHost
 
-    for (const key in this.tt.portals) {
-      const portal = this.tt.portals[key]
+    for (const portalId in this.tt.portals) {
+      const registeredPortal = this.tt.portals[portalId]
 
-      if (portal.p.host == id) {
-        host.registerPortal(portal)
+      if (registeredPortal.p.host == hostId) {
+        registeredHost.registerPortal(registeredPortal)
       }
     }
   }
 
-  unregisterHost(host) {
-    delete this.tt.hosts[host.tt.id]
+  /** @param {RegisteredHost} registeredHost */
+  unregisterHost(registeredHost) {
+    delete this.tt.hosts[registeredHost.tt.id]
   }
 
-  registerPortal(portal) {
-    this.portals[portal.tt.id] = portal
+  /** @param {RegisteredPortal} registeredPortal */
+  registerPortal(registeredPortal) {
+    this.portals[registeredPortal.tt.id] = registeredPortal
   }
 
-  unregisterPortal(portal) {
-    delete this.portals[portal.tt.id]
+  /** @param {RegisteredPortal} registeredPortal */
+  unregisterPortal(registeredPortal) {
+    delete this.portals[registeredPortal.tt.id]
   }
 
   render() {
     return (
       <PortalsContext.Provider value={this}>
-        <HostsContext.Provider value={this.tt.newHosts}>
-          {this.props.children}
-        </HostsContext.Provider>
+        <HostsContext.Provider value={this.tt.newHosts}>{this.props.children}</HostsContext.Provider>
       </PortalsContext.Provider>
     )
   }
-}))
+}
+
+export default memo(shapeComponent(ConjointmentPortalProvider))
