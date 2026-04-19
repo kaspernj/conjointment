@@ -14,6 +14,7 @@ module.exports = {
         trailingComma: "none"
       }
     ],
+    "node/handle-callback-err": "off",
     "react-hooks/rules-of-hooks": "off"
   }
 }

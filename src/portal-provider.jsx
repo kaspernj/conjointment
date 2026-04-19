@@ -15,13 +15,29 @@ export {PortalsContext}
  * @property {import("react").ReactNode} [children]
  */
 
+/**
+ * @typedef {object} HostLike
+ * @property {{id: string}} tt
+ * @property {(portal: PortalLike) => void} registerPortal
+ */
+
+/**
+ * @typedef {object} PortalLike
+ * @property {{id: string}} tt
+ * @property {{host: string}} p
+ */
+
 /** @extends {ShapeComponent<PortalProviderProps>} */
 class ConjointmentPortalProvider extends ShapeComponent {
+  /** @type {Record<string, HostLike>} */
   hosts = {}
+  /** @type {Record<string, HostLike>} */
   newHosts = {}
+  /** @type {Record<string, PortalLike>} */
   portals = {}
   providerValue = {provider: this}
 
+  /** @param {HostLike} host */
   registerHost(host) {
     const {hosts} = this.tt
     const {id} = host.tt
@@ -39,14 +55,17 @@ class ConjointmentPortalProvider extends ShapeComponent {
     }
   }
 
+  /** @param {HostLike} host */
   unregisterHost(host) {
     delete this.tt.hosts[host.tt.id]
   }
 
+  /** @param {PortalLike} portal */
   registerPortal(portal) {
     this.portals[portal.tt.id] = portal
   }
 
+  /** @param {PortalLike} portal */
   unregisterPortal(portal) {
     delete this.portals[portal.tt.id]
   }

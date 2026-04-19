@@ -9,9 +9,7 @@ import {shapeComponent, ShapeComponent} from "set-state-compare/build/shape-comp
 import {PortalsContext} from "./portal-provider"
 
 const HostsContext = createContext(/** @type {any | null} */ (null))
-const shared = {
-  idCount: 0
-}
+const shared = {idCount: 0}
 
 export {HostsContext}
 
@@ -37,16 +35,9 @@ export {HostsContext}
 
 /** @extends {ShapeComponent<PortalHostProps, PortalHostState>} */
 class ConjointmentPortalHost extends ShapeComponent {
-  static defaultProps = {
-    name: "base",
-    placement: "above"
-  }
+  static defaultProps = {name: "base", placement: "above"}
 
-  static propTypes = propTypesExact({
-    children: PropTypes.any,
-    name: PropTypes.string.isRequired,
-    placement: PropTypes.string.isRequired
-  })
+  static propTypes = propTypesExact({children: PropTypes.any, name: PropTypes.string.isRequired, placement: PropTypes.string.isRequired})
 
   id = shared.idCount++
   /** @type {PortalHostState} */
