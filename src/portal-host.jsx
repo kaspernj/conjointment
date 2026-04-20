@@ -99,7 +99,7 @@ class ConjointmentPortalHost extends ShapeComponent {
   setContent(registeredPortal) {
     const newPortals = Object.assign({}, this.s.portals)
     const portalId = registeredPortal.tt.id
-    const portalName = registeredPortal.p.name
+    const portalName = registeredPortal.getName()
 
     if (!(portalId in newPortals)) throw new Error(`No such portal: ${portalName} (${portalId})`)
 
