@@ -14,7 +14,7 @@
     "prepublishOnly": "expo-module prepublishOnly",
     "open:ios": "xed example/ios",
     "open:android": "open -a \"Android Studio\" example/android",
-    "release:patch": "git checkout master && git fetch && git merge origin/master && npm version patch -m \"Bump version to %s\" && git push --follow-tags && npm whoami || npm login && npm publish"
+    "release:patch": "release-patch"
   },
   "keywords": [
     "react-native",
@@ -39,7 +39,8 @@
     "expo": "~55.0.15",
     "expo-module-scripts": "^55.0.2",
     "react": "19.2.0",
-    "react-native": "0.83.4"
+    "react-native": "0.83.4",
+    "release-patch": "^1.0.0"
   },
   "peerDependencies": {
     "expo": "*",
