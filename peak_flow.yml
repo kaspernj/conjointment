@@ -1,6 +1,30 @@
 before_script:
   - npm install
-script:
-  - npm run lint
-  - npm run typecheck
-  - npx expo-doctor
+builds:
+  library:
+    name: Library checks
+    paths:
+      - src/**
+      - android/**
+      - ios/**
+      - expo-module.config.json
+      - tsconfig.json
+      - eslint.config.js
+      - package.json
+      - package-lock.json
+      - peak_flow.yml
+      - "!example/**"
+    script:
+      - npm run lint
+      - npm run typecheck
+      - npm test -- --passWithNoTests
+      - npx expo-doctor
+  example:
+    name: Example checks
+    paths:
+      - example/**
+      - package.json
+      - package-lock.json
+      - peak_flow.yml
+    script:
+      - npm run build
